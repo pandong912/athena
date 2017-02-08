@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+	
+	<!-- 配置文件 -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+	   		<list>
+	    		<value>zk.properties</value>
+	    		<value>redis.properties</value>
+	    		<value>project.properties</value>
+	   		</list>
+	  	</property>
+	</bean>
+	
+	<!-- 实例化，包括调用初始化方法 -->
+	<bean id="consumerMain" class="org.octopus.consumer.ConsumerMain" init-method="init">
+		<property name="redisPool" ref="redisPool" />
+		<property name="threadNum" value="${pj.threadNum}" />
+		<property name="proRoot" value="${pj.rootNode}" />
+		
+		<property name="curatorFramework" ref="curatorFramework" />
+		
+		<property name="taskMap">
+			<map>
+				<!-- key必须与任务类型一致,比如{taskName:xx,taskType:send}-->
+				<entry key="send" value-ref="send" />
+				<entry key="save" value-ref="save" />
+			</map>
+		</property>
+	</bean>
+	
+	<!-- 任务执行类 -->
+	<bean id="send" class="org.octopus.consumer.task.impl.SendRequestTask">
+		<property name="timeout" value="10"/>
+		<property name="nextStepFlag" ref="hasNextStep"/>
+	</bean>
+	<bean id="save" class="org.octopus.consumer.task.impl.SaveResponseTask">
+		<property name="timeout" value="10"/>
+		<property name="nextStepFlag" ref="noNextStep"/>
+	</bean>
+	
+	<!-- 枚举类注入 -->
+	<bean id="hasNextStep" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">    
+        <property name="staticField" value="org.octopus.consumer.task.IExeTask.PostFlag.HasNextStep" />    
+    </bean> 
+    <bean id="noNextStep" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">    
+        <property name="staticField" value="org.octopus.consumer.task.IExeTask.PostFlag.NoNextStep" />    
+    </bean>
+	
+	<import resource="redisContext.xml"/>
+	<import resource="CuratorContext.xml"/>
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+	
+	<bean id="redisPool" class="redis.clients.jedis.JedisPool">
+		<constructor-arg name="poolConfig" ref="commonPoolConfig"/>
+		<constructor-arg name="host" value="${rd.ips}"/>
+		<constructor-arg name="port" value="${rd.port}"/>
+		<constructor-arg name="timeout" value="${rd.sessionTimeout}"/>
+	</bean>
+	<bean id="commonPoolConfig" class="org.apache.commons.pool2.impl.GenericObjectPoolConfig">
+		<property name="maxTotal" value="${rd.maxTotal}"/>
+		<property name="maxIdle" value="${rd.maxIdle}"/>
+		<property name="minIdle" value="${rd.minIdle}"/>
+		<property name="maxWaitMillis" value="${rd.maxWaitMillis}"/>
+		<property name="testOnBorrow" value="${rd.testOnBorrow}"/>
+		<property name="timeBetweenEvictionRunsMillis" value="${rd.timeBetweenEvictionRunsMillis}" />
+		<property name="minEvictableIdleTimeMillis" value="${rd.minEvictableIdleTimeMillis}" />
+	</bean>
+	
+</beans>

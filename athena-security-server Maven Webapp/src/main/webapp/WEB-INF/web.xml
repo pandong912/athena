@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>sec</display-name>
+
+	<listener>
+		<listener-class>com.ccb.ltr.sec.listener.SecIntListener</listener-class>
+	</listener>
+	<context-param>
+		<param-name>secNode</param-name>
+		<param-value>120020</param-value>
+	</context-param>
+
+	<servlet>
+		<description></description>
+		<display-name>SecDecode</display-name>
+		<servlet-name>SecDecode</servlet-name>
+		<servlet-class>com.ccb.ltr.sec.servlet.SecDecodeServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SecDecode</servlet-name>
+		<url-pattern>/SecDecode</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description></description>
+		<display-name>SecEncode</display-name>
+		<servlet-name>SecEncode</servlet-name>
+		<servlet-class>com.ccb.ltr.sec.servlet.SecEncodeServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SecEncode</servlet-name>
+		<url-pattern>/SecEncode</url-pattern>
+	</servlet-mapping>
+</web-app>
